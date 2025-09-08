@@ -5,32 +5,16 @@
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.rushi</groupId>
-	<artifactId>student-reg-webapp</artifactId>
+	<artifactId>student-registration</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<properties>
 		<java.version>11</java.version>
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
-		<sonar.host.url>http://13.57.206.25:9000</sonar.host.url>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-		<sonar.sources>src/main/java</sonar.sources>
-		<!-- <sonar.tests>src/test/java</sonar.tests> -->
-		<sonar.java.binaries>target/classes</sonar.java.binaries>
-		<sonar.exclusions>**/*.css</sonar.exclusions>
 	</properties>
 
-    <distributionManagement>
-		<repository>
-			<id>nexus</id>
-			<url>http://13.57.13.23:8081/repository/student-reg-webapp/</url>
-		</repository>
-		<snapshotRepository>
-			<id>nexus</id>
-			<url>http://13.57.13.23:8081/repository/student-reg-appp-snapshots/</url>
-		</snapshotRepository>
-    </distributionManagement>
+  
 
 	<dependencies>
 		<dependency>
@@ -119,7 +103,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>student-reg-webapp</finalName>
+		<finalName>student-registration</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
