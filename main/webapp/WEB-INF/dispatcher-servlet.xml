@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+         http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+  <context:component-scan base-package="com.rushi"/>
+  <mvc:resources mapping="/images/**" location="/images/"/>
+  <mvc:resources mapping="/css/**" location="/css/"/>
+  <mvc:annotation-driven/>
+
+  <!-- Load application.properties from classpath; allow ENV vars to override -->
+  <context:property-placeholder location="classpath:application.properties"
+                                system-properties-mode="OVERRIDE"/>
+
+  <!-- DataSource (keep DriverManagerDataSource for now; switch to Hikari/DBCP in prod) -->
+  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName" value="${spring.datasource.driver-class-name}"/>
+    <property name="url" value="${spring.datasource.url}"/>
+    <property name="username" value="${spring.datasource.username}"/>
+    <property name="password" value="${spring.datasource.password}"/>
+  </bean>
+
+  <!-- JPA + Hibernate -->
+  <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+    <property name="dataSource" ref="dataSource"/>
+    <property name="packagesToScan" value="com.rushi.model"/>
+
+    <!-- IMPORTANT: tell Hibernate which dialect to use (or it will crash) -->
+    <property name="jpaVendorAdapter">
+      <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="showSql" value="${spring.jpa.show-sql:true}"/>
+        <!-- Set databasePlatform (dialect) explicitly -->
+        <property name="databasePlatform" value="${spring.jpa.properties.hibernate.dialect:org.hibernate.dialect.MySQL8Dialect}"/>
+        <property name="generateDdl" value="false"/>
+      </bean>
+    </property>
+
+    <!-- Additional Hibernate properties -->
+    <property name="jpaProperties">
+      <props>
+        <prop key="hibernate.hbm2ddl.auto">${spring.jpa.hibernate.ddl-auto:update}</prop>
+        <prop key="hibernate.format_sql">${spring.jpa.properties.hibernate.format_sql:true}</prop>
+        <!-- Optional but helpful -->
+        <prop key="hibernate.jdbc.time_zone">UTC</prop>
+      </props>
+    </property>
+  </bean>
+
+  <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+    <property name="entityManagerFactory" ref="entityManagerFactory"/>
+  </bean>
+  <tx:annotation-driven transaction-manager="transactionManager"/>
+
+  <!-- Thymeleaf (unchanged) -->
+  <bean id="templateResolver" class="org.thymeleaf.templateresolver.ClassLoaderTemplateResolver">
+    <property name="prefix" value="/templates/"/>
+    <property name="suffix" value=".html"/>
+    <property name="templateMode" value="HTML"/>
+    <property name="characterEncoding" value="UTF-8"/>
+  </bean>
+
+  <bean id="templateEngine" class="org.thymeleaf.spring5.SpringTemplateEngine">
+    <property name="templateResolver" ref="templateResolver"/>
+  </bean>
+
+  <bean class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
+    <property name="templateEngine" ref="templateEngine"/>
+    <property name="characterEncoding" value="UTF-8"/>
+  </bean>
+
+  <jpa:repositories base-package="com.rushi.repository"/>
+</beans>
