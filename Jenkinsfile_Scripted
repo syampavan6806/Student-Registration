@@ -29,7 +29,7 @@ node {
         
         stage("Deploy War File To  Tomcat") {
                 sshagent(['Tomcat_Server']) {
-                    sh "scp -o StrictHostKeyChecking=no target/student-reg-webapp.war ec2-user@172.31.21.97:/opt/tomcat/webapps/student-reg-webapp.war"
+                    sh "scp -o StrictHostKeyChecking=no target/student-registration.war ec2-user@172.31.21.97:/opt/tomcat/webapps/student-registration.war"
                 }
         }
         

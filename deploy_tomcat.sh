@@ -8,8 +8,8 @@ if [ -z "$TOMCAT_SERVER_IPS" ]; then
     echo "Error: TOMCAT_SERVER_IPS parameter is required."
     exit 1
 fi
-WAR_FILE="target/student-reg-webapp.war"
-DEST_PATH="/opt/tomcat/webapps/student-reg-webapp.war"
+WAR_FILE="target/student-registration.war"
+DEST_PATH="/opt/tomcat/webapps/student-registration.war"
 USER="ec2-user"
 
 IFS=',' read -ra IP_ARRAY <<< "$TOMCAT_SERVER_IPS"

@@ -56,7 +56,7 @@ pipeline {
                      ssh -o  StrictHostKeyChecking=no ec2-user@${TOMCAT_SERVER_IP} sudo systemctl stop tomcat
                      echo Stoping the Tomcat Process
                      sleep 30
-                     scp -o  StrictHostKeyChecking=no target/student-reg-webapp.war ec2-user@${TOMCAT_SERVER_IP}:/opt/tomcat/webapps/student-reg-webapp.war
+                     scp -o  StrictHostKeyChecking=no target/student-registration.war ec2-user@${TOMCAT_SERVER_IP}:/opt/tomcat/webapps/student-registration.war
                      echo Copying the War file to Tomcat Server
                      ssh -o  StrictHostKeyChecking=no ec2-user@${TOMCAT_SERVER_IP} sudo systemctl start tomcat
                      echo Strating the Tomcat process
