@@ -1,0 +1,50 @@
+name: student-registration # In Case of Docker Swarm, this is the stack name comment this line or remove it
+services:
+  student-reg-webapp:
+    image: rushitechnologiesbalaji/student-registration:1
+    ports:
+    - 8080:8080
+    environment:
+    - DB_HOST=mysqldb
+    - DB_USER=devdb
+    - DB_PASSWORD=devdb@123
+    - DB_NAME=studentdb
+    depends_on:
+    - mysqldb
+    # deploy:  # Deploy key is used only in Docker Swarm mode and ignored in Docker Compose mode
+    #   mode: replicated
+    #   replicas: 2
+    #   resources:
+    #     limits:
+    #       cpus: '0.50'
+    #       memory: 512M
+    #     reservations:
+    #       cpus: '0.25'
+    #       memory: 256M
+    #   restart_policy:
+    #     condition: on-failure
+    #     delay: 5s
+    #     max_attempts: 3
+    #     window: 120s
+    #   placement:
+    #     constraints:
+    #     - node.role == worker
+    networks:
+    - student-reg-bridge
+  mysqldb:
+    image: mysql:8.0
+    container_name: mysqldb
+    restart: always
+    environment:
+    - MYSQL_ROOT_PASSWORD=root@123
+    - MYSQL_DATABASE=studentdb
+    - MYSQL_USER=devdb
+    - MYSQL_PASSWORD=devdb@123
+    volumes:
+    - mysqldbdata:/var/lib/mysql
+    networks:
+    - student-reg-bridge
+volumes:
+  mysqldbdata:
+networks:
+  student-reg-bridge:
