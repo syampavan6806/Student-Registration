@@ -1,3 +1,4 @@
+/*
 version: "3"
 services:
   studentregwebapp:
@@ -29,3 +30,51 @@ networks:
 volumes :
   mysqldbdata:
     driver: local
+*/
+
+version: '3.8'
+services:
+  studentregapp:
+    image: dockersyampawan/student-registration:1
+    environment:
+      - DB_HOST=mysqldb
+      - DB_USER=devdb
+      - DB_PASSWORD=devdb@123
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysqldb
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 20s
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 5
+    networks:
+      - studentoverlay
+
+  mysqldb:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin@123
+      - MYSQL_DATABASE=studentdb
+      - MYSQL_USER=devdb
+      - MYSQL_PASSWORD=devdb@123
+    volumes:
+      - mysqlvol:/var/lib/mysql
+    deploy:
+      restart_policy:
+        condition: on-failure
+    networks:
+      - studentoverlay
+volumes:
+  mysqlvol:
+    driver: local
+networks:
+  studentoverlay:
+    driver: overlay
+
+
