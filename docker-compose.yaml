@@ -1,7 +1,7 @@
 version: "3"
 services:
   studentregwebapp:
-    image: dockersyampawan/student-registration:1
+    image: dockersyampawan/student-registration:VERSION
     depends_on:
     - mysqldb
     ports:
