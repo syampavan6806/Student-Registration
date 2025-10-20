@@ -35,7 +35,7 @@ volumes :
 version: '3.8'
 services:
   studentregapp:
-    image: dockersyampawan/student-registration:1
+    image: dockersyampawan/student-registration:VERSION
     environment:
       - DB_HOST=mysqldb
       - DB_USER=devdb
