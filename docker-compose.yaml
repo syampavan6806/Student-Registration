@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   studentregapp:
-    image: dockersyampawan/student-registration:VERSION
+    image: 789899931389.dkr.ecr.ap-south-1.amazonaws.com/student-registration:VERSION
     environment:
       - DB_HOST=mysqldb
       - DB_USER=devdb
