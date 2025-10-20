@@ -1,0 +1,31 @@
+version: "3"
+services:
+  studentregwebapp:
+    image: dockersyampawan/student-registration:1
+    depends_on:
+    - mysqldb
+    ports:
+    - 8080:8080
+    environment:
+    - DB_HOST=mysqldb
+    - DB_USER=devdb
+    - DB_PASSWORD=devdb@123
+    networks:
+    - studentregbridge
+  mysqldb:
+    image: mysql
+    environment:
+    - MYSQL_ROOT_PASSWORD=admin@123
+    - MYSQL_DATABASE=studentdb
+    - MYSQL_USER=devdb
+    - MYSQL_PASSWORD=devdb@123
+    networks:
+    - studentregbridge
+    volumes:
+    - mysqldbdata:/var/lib/mysql
+networks:
+  studentregbridge:
+    driver: bridge
+volumes :
+  mysqldbdata:
+    driver: local
